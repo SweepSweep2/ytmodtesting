@@ -50,9 +50,9 @@ void YoutubeAPI::setSearchQuery(std::string searchQuery) {
 matjson::Value YoutubeAPI::getVideoInfo(std::string videoId) {
     m_videoInfo = matjson::Value();
 
-    YoutubeAPI::m_webListener.bind([this, videoId](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) { // if the download was successful
-            std::string finalResult = res->string().unwrapOr("Failed to get video info!"); // final download
+    m_webListener.bind([this, videoId](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get video info!"); 
 
             if (finalResult == "Failed to get video info!") {
                 log::error("Failed to get video info for video ID {}!", videoId);
@@ -76,7 +76,7 @@ matjson::Value YoutubeAPI::getVideoInfo(std::string videoId) {
     });
 
     web::WebRequest request;
-    YoutubeAPI::m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics,player,status,topicDetails,recordingDetails,localizations&id=" + videoId + "&key=" + m_apiKey)); // idk
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics,player,status,topicDetails,recordingDetails,localizations&id=" + videoId + "&key=" + m_apiKey)); 
 
     return m_videoInfo;
 }
@@ -84,9 +84,9 @@ matjson::Value YoutubeAPI::getVideoInfo(std::string videoId) {
 matjson::Value YoutubeAPI::getVideoInfo() {
     m_videoInfo = matjson::Value();
 
-    YoutubeAPI::m_webListener.bind([this](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) { // if the download was successful
-            std::string finalResult = res->string().unwrapOr("Failed to get video info!"); // final download
+    m_webListener.bind([this](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get video info!"); 
 
             if (finalResult == "Failed to get video info!") {
                 log::error("Failed to get video info for video ID {}!", m_videoId);
@@ -110,7 +110,7 @@ matjson::Value YoutubeAPI::getVideoInfo() {
     });
 
     web::WebRequest request;
-    YoutubeAPI::m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics,player,status,topicDetails,recordingDetails,localizations&id=" + m_videoId + "&key=" + m_apiKey)); // idk
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics,player,status,topicDetails,recordingDetails,localizations&id=" + m_videoId + "&key=" + m_apiKey)); 
 
     return m_videoInfo;
 }
@@ -118,9 +118,9 @@ matjson::Value YoutubeAPI::getVideoInfo() {
 matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::string pageToken) {
     m_channelSubscriptions = matjson::Value();
 
-    YoutubeAPI::m_webListener.bind([this, channelId](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) { // if the download was successful
-            std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!"); // final download
+    m_webListener.bind([this, channelId](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) {
+            std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!");
 
             if (finalResult == "Failed to get subscriptions!") {
                 log::error("Failed to get subscriptions for channel ID {}!", channelId);
@@ -131,14 +131,12 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::string p
                     log::error("Failed to parse subscriptions for channel ID {}: {}", channelId, result.unwrapErr());
                 } else {
                     m_channelSubscriptions = result.unwrapOr("Failed to parse channel subscriptions!");
-                    log::info("Channel subscriptions: {}", m_channelSubscriptions.dump(4));
                     
                     if (m_channelSubscriptions == "Failed to parse channel subscriptions!") {
                         log::error("Failed to parse channel subscriptions for channel ID {}!", channelId);
                         m_channelSubscriptions = matjson::Value();
                     } else {
                         log::info("Successfully retrieved subscriptions for channel ID {}!", channelId);
-                        log::info("Subscriptions: {}", m_channelSubscriptions["items"][1]["snippet"]["title"].asString().unwrapOr("No title found"));
                     }
                 }
             }
@@ -146,7 +144,7 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::string p
     });
 
     web::WebRequest request;
-    YoutubeAPI::m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/subscriptions?part=contentDetails,id,snippet,subscriberSnippet&channelId=" + channelId + "&key=" + m_apiKey + "&pageToken=" + pageToken)); // idk
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/subscriptions?part=contentDetails,id,snippet,subscriberSnippet&channelId=" + channelId + "&key=" + m_apiKey + "&pageToken=" + pageToken));
 
     return m_channelSubscriptions;
 }
@@ -154,9 +152,9 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::string p
 matjson::Value YoutubeAPI::getSubscriptions(std::string channelId) {
     m_channelSubscriptions = matjson::Value();
 
-    YoutubeAPI::m_webListener.bind([this, channelId](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) { // if the download was successful
-            std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!"); // final download
+    m_webListener.bind([this, channelId](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!");
 
             if (finalResult == "Failed to get subscriptions!") {
                 log::error("Failed to get subscriptions for channel ID {}!", channelId);
@@ -167,14 +165,12 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId) {
                     log::error("Failed to parse subscriptions for channel ID {}: {}", channelId, result.unwrapErr());
                 } else {
                     m_channelSubscriptions = result.unwrapOr("Failed to parse channel subscriptions!");
-                    log::info("Channel subscriptions: {}", m_channelSubscriptions.dump(4));
                     
                     if (m_channelSubscriptions == "Failed to parse channel subscriptions!") {
                         log::error("Failed to parse channel subscriptions for channel ID {}!", channelId);
                         m_channelSubscriptions = matjson::Value();
                     } else {
                         log::info("Successfully retrieved subscriptions for channel ID {}!", channelId);
-                        log::info("Subscriptions: {}", m_channelSubscriptions["items"][0]["snippet"]["title"].asString().unwrapOr("No title found"));
                     }
                 }
             }
@@ -182,7 +178,7 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId) {
     });
 
     web::WebRequest request;
-    YoutubeAPI::m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/subscriptions?part=contentDetails,id,snippet,subscriberSnippet&channelId=" + channelId + "&key=" + m_apiKey)); // idk
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/subscriptions?part=contentDetails,id,snippet,subscriberSnippet&channelId=" + channelId + "&key=" + m_apiKey)); 
 
     return m_channelSubscriptions;
 }
@@ -190,9 +186,9 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId) {
 matjson::Value YoutubeAPI::getSubscriptions() {
     m_channelSubscriptions = matjson::Value();
 
-    YoutubeAPI::m_webListener.bind([this](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) { // if the download was successful
-            std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!"); // final download
+    m_webListener.bind([this](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!"); 
 
             if (finalResult == "Failed to get subscriptions!") {
                 log::error("Failed to get subscriptions for channel ID {}!", m_channelId);
@@ -203,14 +199,12 @@ matjson::Value YoutubeAPI::getSubscriptions() {
                     log::error("Failed to parse subscriptions for channel ID {}: {}", m_channelId, result.unwrapErr());
                 } else {
                     m_channelSubscriptions = result.unwrapOr("Failed to parse channel subscriptions!");
-                    log::info("Channel subscriptions: {}", m_channelSubscriptions.dump(4));
                     
                     if (m_channelSubscriptions == "Failed to parse channel subscriptions!") {
                         log::error("Failed to parse channel subscriptions for channel ID {}!", m_channelId);
                         m_channelSubscriptions = matjson::Value();
                     } else {
                         log::info("Successfully retrieved subscriptions for channel ID {}!", m_channelId);
-                        log::info("Subscriptions: {}", m_channelSubscriptions["items"][0]["snippet"]["title"].asString().unwrapOr("No title found"));
                     }
                 }
             }
@@ -218,7 +212,7 @@ matjson::Value YoutubeAPI::getSubscriptions() {
     });
 
     web::WebRequest request;
-    YoutubeAPI::m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/subscriptions?part=contentDetails,id,snippet,subscriberSnippet&channelId=" + m_channelId + "&key=" + m_apiKey)); // idk
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/subscriptions?part=contentDetails,id,snippet,subscriberSnippet&channelId=" + m_channelId + "&key=" + m_apiKey)); 
 
     return m_channelSubscriptions;
 }
@@ -226,9 +220,9 @@ matjson::Value YoutubeAPI::getSubscriptions() {
 matjson::Value YoutubeAPI::getSearchResults(std::string query, std::string pageToken) {
     m_searchResults = matjson::Value();
 
-    YoutubeAPI::m_webListener.bind([this, query, pageToken](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) { // if the download was successful
-            std::string finalResult = res->string().unwrapOr("Failed to get search results!"); // final download
+    m_webListener.bind([this, query, pageToken](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get search results!"); 
 
             if (finalResult == "Failed to get search results!") {
                 log::error("Failed to get search results for query {}!", query);
@@ -239,14 +233,12 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query, std::string pageT
                     log::error("Failed to parse search results for query {}: {}", query, result.unwrapErr());
                 } else {
                     m_searchResults = result.unwrapOr("Failed to parse channel search results!");
-                    log::info("Channel search results: {}", m_searchResults.dump(4));
                     
                     if (m_searchResults == "Failed to parse channel search results!") {
-                        log::error("Failed to parse channel search results for query {}!", query);
+                        log::error("Failed to parse search results for query {}!", query);
                         m_searchResults = matjson::Value();
                     } else {
                         log::info("Successfully retrieved search results for query {}!", query);
-                        // log::info("search results: {}", m_searchResults["items"][0]["snippet"]["title"].asString().unwrapOr("No title found"));
                     }
                 }
             }
@@ -254,7 +246,7 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query, std::string pageT
     });
 
     web::WebRequest request;
-    YoutubeAPI::m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + query + "&key=" + m_apiKey + "&pageToken=" + pageToken)); // idk
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + query + "&key=" + m_apiKey + "&pageToken=" + pageToken)); 
 
     return m_searchResults;
 }
@@ -262,9 +254,9 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query, std::string pageT
 matjson::Value YoutubeAPI::getSearchResults(std::string query) {
     m_searchResults = matjson::Value();
 
-    YoutubeAPI::m_webListener.bind([this, query](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) { // if the download was successful
-            std::string finalResult = res->string().unwrapOr("Failed to get search results!"); // final download
+    m_webListener.bind([this, query](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get search results!"); 
 
             if (finalResult == "Failed to get search results!") {
                 log::error("Failed to get search results for query {}!", query);
@@ -275,14 +267,12 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query) {
                     log::error("Failed to parse search results for query {}: {}", query, result.unwrapErr());
                 } else {
                     m_searchResults = result.unwrapOr("Failed to parse channel search results!");
-                    log::info("Channel search results: {}", m_searchResults.dump(4));
                     
                     if (m_searchResults == "Failed to parse channel search results!") {
-                        log::error("Failed to parse channel search results for query {}!", query);
+                        log::error("Failed to parse search results for query {}!", query);
                         m_searchResults = matjson::Value();
                     } else {
                         log::info("Successfully retrieved search results for query {}!", query);
-                        // log::info("search results: {}", m_searchResults["items"][0]["snippet"]["title"].asString().unwrapOr("No title found"));
                     }
                 }
             }
@@ -290,7 +280,7 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query) {
     });
 
     web::WebRequest request;
-    YoutubeAPI::m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + query + "&key=" + m_apiKey)); // idk
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + query + "&key=" + m_apiKey)); 
 
     return m_searchResults;
 }
@@ -298,9 +288,9 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query) {
 matjson::Value YoutubeAPI::getSearchResults() {
     m_searchResults = matjson::Value();
 
-    YoutubeAPI::m_webListener.bind([this](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) { // if the download was successful
-            std::string finalResult = res->string().unwrapOr("Failed to get search results!"); // final download
+    m_webListener.bind([this](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get search results!"); 
 
             if (finalResult == "Failed to get search results!") {
                 log::error("Failed to get search results for query {}!", m_searchQuery);
@@ -311,14 +301,12 @@ matjson::Value YoutubeAPI::getSearchResults() {
                     log::error("Failed to parse search results for query {}: {}", m_searchQuery, result.unwrapErr());
                 } else {
                     m_searchResults = result.unwrapOr("Failed to parse channel search results!");
-                    log::info("Channel search results: {}", m_searchResults.dump(4));
                     
                     if (m_searchResults == "Failed to parse channel search results!") {
-                        log::error("Failed to parse channel search results for query {}!", m_searchQuery);
+                        log::error("Failed to parse search results for query {}!", m_searchQuery);
                         m_searchResults = matjson::Value();
                     } else {
                         log::info("Successfully retrieved search results for query {}!", m_searchQuery);
-                        // log::info("search results: {}", m_searchResults["items"][0]["snippet"]["title"].asString().unwrapOr("No title found"));
                     }
                 }
             }
@@ -326,7 +314,109 @@ matjson::Value YoutubeAPI::getSearchResults() {
     });
 
     web::WebRequest request;
-    YoutubeAPI::m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + m_searchQuery + "&key=" + m_apiKey)); // idk
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + m_searchQuery + "&key=" + m_apiKey)); 
 
     return m_searchResults;
+}
+
+matjson::Value YoutubeAPI::getActivites(std::string channelId, std::string pageToken) {
+    m_activities = matjson::Value();
+
+    m_webListener.bind([this, channelId, pageToken](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get activities!"); 
+
+            if (finalResult == "Failed to get activities!") {
+                log::error("Failed to get activities for channel ID {}!", channelId);
+            } else {
+                auto result = matjson::parse(finalResult);
+
+                if (result.isErr()) {
+                    log::error("Failed to parse activities for channel ID {}: {}", channelId, result.unwrapErr());
+                } else {
+                    m_activities = result.unwrapOr("Failed to parse channel activities!");
+                    
+                    if (m_activities == "Failed to parse channel activities!") {
+                        log::error("Failed to parse activities for channel ID {}!", channelId);
+                        m_activities = matjson::Value();
+                    } else {
+                        log::info("Successfully retrieved activities for channel ID {}!", channelId);
+                    }
+                }
+            }
+        }
+    });
+
+    web::WebRequest request;
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/activities?part=contentDetails,id,snippet&channelId=" + channelId + "&pageToken=" + pageToken + "&key=" + m_apiKey)); 
+
+    return m_activities;
+}
+
+matjson::Value YoutubeAPI::getActivites(std::string channelId) {
+    m_activities = matjson::Value();
+
+    m_webListener.bind([this, channelId](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get activities!"); 
+
+            if (finalResult == "Failed to get activities!") {
+                log::error("Failed to get activities for channel ID {}!", channelId);
+            } else {
+                auto result = matjson::parse(finalResult);
+
+                if (result.isErr()) {
+                    log::error("Failed to parse activities for channel ID {}: {}", channelId, result.unwrapErr());
+                } else {
+                    m_activities = result.unwrapOr("Failed to parse channel activities!");
+                    
+                    if (m_activities == "Failed to parse channel activities!") {
+                        log::error("Failed to parse activities for channel ID {}!", channelId);
+                        m_activities = matjson::Value();
+                    } else {
+                        log::info("Successfully retrieved activities for channel ID {}!", channelId);
+                    }
+                }
+            }
+        }
+    });
+
+    web::WebRequest request;
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/activities?part=contentDetails,id,snippet&channelId=" + channelId + "&key=" + m_apiKey)); 
+
+    return m_activities;
+}
+
+matjson::Value YoutubeAPI::getActivites() {
+    m_activities = matjson::Value();
+
+    m_webListener.bind([this](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get activities!"); 
+
+            if (finalResult == "Failed to get activities!") {
+                log::error("Failed to get activities for channel ID {}!", m_channelId);
+            } else {
+                auto result = matjson::parse(finalResult);
+
+                if (result.isErr()) {
+                    log::error("Failed to parse activities for channel ID {}: {}", m_channelId, result.unwrapErr());
+                } else {
+                    m_activities = result.unwrapOr("Failed to parse channel activities!");
+                    
+                    if (m_activities == "Failed to parse channel activities!") {
+                        log::error("Failed to parse activities for channel ID {}!", m_channelId);
+                        m_activities = matjson::Value();
+                    } else {
+                        log::info("Successfully retrieved activities for channel ID {}!", m_channelId);
+                    }
+                }
+            }
+        }
+    });
+
+    web::WebRequest request;
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/activities?part=contentDetails,id,snippet&channelId=" + m_channelId + "&key=" + m_apiKey)); 
+
+    return m_activities;
 }

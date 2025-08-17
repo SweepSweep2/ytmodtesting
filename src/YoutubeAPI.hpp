@@ -26,6 +26,7 @@ class YOUTUBE_API_DLL YoutubeAPI {
         matjson::Value m_videoInfo;
         matjson::Value m_channelSubscriptions;
         matjson::Value m_searchResults;
+        matjson::Value m_activities;
         EventListener<web::WebTask> m_webListener;
     protected:
         static YoutubeAPI* instance;
@@ -48,4 +49,7 @@ class YOUTUBE_API_DLL YoutubeAPI {
         matjson::Value getSearchResults(std::string query, std::string pageToken);
         matjson::Value getSearchResults(std::string query);
         matjson::Value getSearchResults();
+        matjson::Value getActivites(std::string channelId, std::string pageToken);
+        matjson::Value getActivites(std::string channelId);
+        matjson::Value getActivites();
 };
