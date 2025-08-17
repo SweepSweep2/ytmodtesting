@@ -10,8 +10,6 @@
 	"name": "youtube-api-test-mod",
 	"version": "v1.0.0",
 	"developer": "Sweep",
-	"description": "i hate you onedrive",
-	"dependencies": {
-		"sweep.youtube-chat-api": "v1.0.0"
-	}
+	"description": "i hate you onedrive"
 }
+
