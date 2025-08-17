@@ -1,23 +1,25 @@
 # youtube-api-test-mod
-This is where she makes a mod.
+This is where she hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
-<img src="logo.png" width="150" alt="the mod's logo" />
+<img src="logo.png" width="150" alt="hhhhhhhhhhhhhhhh" />
 
-*Update logo.png to change your mod's icon (please)*
+hhhhhhhhhhhhhhhhhhhhhhh (h)
 
 ## Getting started
-We recommend heading over to [the getting started section on our docs](https://docs.geode-sdk.org/getting-started/) for useful info on what to do next.
+Go thhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
 ## Build instructions
-For more info, see [our docs](https://docs.geode-sdk.org/getting-started/create-mod#build)
-```sh
-# Assuming you have the Geode CLI set up already
-geode build
+For more info, see h
+```h
+# Assuming you have h
+h
 ```
 
 # Resources
-* [Geode SDK Documentation](https://docs.geode-sdk.org/)
-* [Geode SDK Source Code](https://github.com/geode-sdk/geode/)
-* [Geode CLI](https://github.com/geode-sdk/cli)
-* [Bindings](https://github.com/geode-sdk/bindings/)
-* [Dev Tools](https://github.com/geode-sdk/DevTools)
+* h
+* h
+* h
+* h
+* h
+
+<img src="https://i.redd.it/hcr0l558jz0a1.png" alt="you are missing out on the h">
