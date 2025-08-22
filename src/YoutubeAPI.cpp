@@ -47,10 +47,10 @@ void YoutubeAPI::setSearchQuery(std::string searchQuery) {
     m_searchQuery = searchQuery;
 }
 
-matjson::Value YoutubeAPI::getVideoInfo(std::string videoId) {
+matjson::Value YoutubeAPI::getVideoInfo(std::string videoId, std::function<void(const matjson::Value&)> callback) {
     m_videoInfo = matjson::Value();
 
-    m_webListener.bind([this, videoId](web::WebTask::Event* e) {
+    m_webListener.bind([this, videoId, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get video info!"); 
 
@@ -69,6 +69,10 @@ matjson::Value YoutubeAPI::getVideoInfo(std::string videoId) {
                         m_videoInfo = matjson::Value();
                     } else {
                         log::info("Successfully retrieved video info for video ID {}!", videoId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -81,10 +85,10 @@ matjson::Value YoutubeAPI::getVideoInfo(std::string videoId) {
     return m_videoInfo;
 }
 
-matjson::Value YoutubeAPI::getVideoInfo() {
+matjson::Value YoutubeAPI::getVideoInfo(std::function<void(const matjson::Value&)> callback) {
     m_videoInfo = matjson::Value();
 
-    m_webListener.bind([this](web::WebTask::Event* e) {
+    m_webListener.bind([this, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get video info!"); 
 
@@ -103,6 +107,10 @@ matjson::Value YoutubeAPI::getVideoInfo() {
                         m_videoInfo = matjson::Value();
                     } else {
                         log::info("Successfully retrieved video info for video ID {}!", m_videoId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -115,10 +123,10 @@ matjson::Value YoutubeAPI::getVideoInfo() {
     return m_videoInfo;
 }
 
-matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::string pageToken) {
+matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::string pageToken, std::function<void(const matjson::Value&)> callback) {
     m_channelSubscriptions = matjson::Value();
 
-    m_webListener.bind([this, channelId](web::WebTask::Event* e) {
+    m_webListener.bind([this, channelId, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) {
             std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!");
 
@@ -137,6 +145,10 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::string p
                         m_channelSubscriptions = matjson::Value();
                     } else {
                         log::info("Successfully retrieved subscriptions for channel ID {}!", channelId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -149,10 +161,10 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::string p
     return m_channelSubscriptions;
 }
 
-matjson::Value YoutubeAPI::getSubscriptions(std::string channelId) {
+matjson::Value YoutubeAPI::getSubscriptions(std::string channelId, std::function<void(const matjson::Value&)> callback) {
     m_channelSubscriptions = matjson::Value();
 
-    m_webListener.bind([this, channelId](web::WebTask::Event* e) {
+    m_webListener.bind([this, channelId, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!");
 
@@ -171,6 +183,10 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId) {
                         m_channelSubscriptions = matjson::Value();
                     } else {
                         log::info("Successfully retrieved subscriptions for channel ID {}!", channelId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -183,10 +199,10 @@ matjson::Value YoutubeAPI::getSubscriptions(std::string channelId) {
     return m_channelSubscriptions;
 }
 
-matjson::Value YoutubeAPI::getSubscriptions() {
+matjson::Value YoutubeAPI::getSubscriptions(std::function<void(const matjson::Value&)> callback) {
     m_channelSubscriptions = matjson::Value();
 
-    m_webListener.bind([this](web::WebTask::Event* e) {
+    m_webListener.bind([this, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get subscriptions!"); 
 
@@ -205,6 +221,10 @@ matjson::Value YoutubeAPI::getSubscriptions() {
                         m_channelSubscriptions = matjson::Value();
                     } else {
                         log::info("Successfully retrieved subscriptions for channel ID {}!", m_channelId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -217,10 +237,10 @@ matjson::Value YoutubeAPI::getSubscriptions() {
     return m_channelSubscriptions;
 }
 
-matjson::Value YoutubeAPI::getSearchResults(std::string query, std::string pageToken) {
+matjson::Value YoutubeAPI::getSearchResults(std::string query, std::string pageToken, std::function<void(const matjson::Value&)> callback) {
     m_searchResults = matjson::Value();
 
-    m_webListener.bind([this, query, pageToken](web::WebTask::Event* e) {
+    m_webListener.bind([this, query, pageToken, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get search results!"); 
 
@@ -239,6 +259,10 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query, std::string pageT
                         m_searchResults = matjson::Value();
                     } else {
                         log::info("Successfully retrieved search results for query {}!", query);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -251,10 +275,10 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query, std::string pageT
     return m_searchResults;
 }
 
-matjson::Value YoutubeAPI::getSearchResults(std::string query) {
+matjson::Value YoutubeAPI::getSearchResults(std::string query, std::function<void(const matjson::Value&)> callback) {
     m_searchResults = matjson::Value();
 
-    m_webListener.bind([this, query](web::WebTask::Event* e) {
+    m_webListener.bind([this, query, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get search results!"); 
 
@@ -273,6 +297,10 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query) {
                         m_searchResults = matjson::Value();
                     } else {
                         log::info("Successfully retrieved search results for query {}!", query);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -285,10 +313,10 @@ matjson::Value YoutubeAPI::getSearchResults(std::string query) {
     return m_searchResults;
 }
 
-matjson::Value YoutubeAPI::getSearchResults() {
+matjson::Value YoutubeAPI::getSearchResults(std::function<void(const matjson::Value&)> callback) {
     m_searchResults = matjson::Value();
 
-    m_webListener.bind([this](web::WebTask::Event* e) {
+    m_webListener.bind([this, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get search results!"); 
 
@@ -307,6 +335,10 @@ matjson::Value YoutubeAPI::getSearchResults() {
                         m_searchResults = matjson::Value();
                     } else {
                         log::info("Successfully retrieved search results for query {}!", m_searchQuery);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -319,10 +351,10 @@ matjson::Value YoutubeAPI::getSearchResults() {
     return m_searchResults;
 }
 
-matjson::Value YoutubeAPI::getActivites(std::string channelId, std::string pageToken) {
+matjson::Value YoutubeAPI::getActivites(std::string channelId, std::string pageToken, std::function<void(const matjson::Value&)> callback) {
     m_activities = matjson::Value();
 
-    m_webListener.bind([this, channelId, pageToken](web::WebTask::Event* e) {
+    m_webListener.bind([this, channelId, pageToken, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get activities!"); 
 
@@ -334,13 +366,17 @@ matjson::Value YoutubeAPI::getActivites(std::string channelId, std::string pageT
                 if (result.isErr()) {
                     log::error("Failed to parse activities for channel ID {}: {}", channelId, result.unwrapErr());
                 } else {
-                    m_activities = result.unwrapOr("Failed to parse channel activities!");
+                    m_activities = result.unwrapOr("Failed to parse activities!");
                     
-                    if (m_activities == "Failed to parse channel activities!") {
+                    if (m_activities == "Failed to parse activities!") {
                         log::error("Failed to parse activities for channel ID {}!", channelId);
                         m_activities = matjson::Value();
                     } else {
                         log::info("Successfully retrieved activities for channel ID {}!", channelId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -353,10 +389,10 @@ matjson::Value YoutubeAPI::getActivites(std::string channelId, std::string pageT
     return m_activities;
 }
 
-matjson::Value YoutubeAPI::getActivites(std::string channelId) {
+matjson::Value YoutubeAPI::getActivites(std::string channelId, std::function<void(const matjson::Value&)> callback) {
     m_activities = matjson::Value();
 
-    m_webListener.bind([this, channelId](web::WebTask::Event* e) {
+    m_webListener.bind([this, channelId, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get activities!"); 
 
@@ -368,13 +404,17 @@ matjson::Value YoutubeAPI::getActivites(std::string channelId) {
                 if (result.isErr()) {
                     log::error("Failed to parse activities for channel ID {}: {}", channelId, result.unwrapErr());
                 } else {
-                    m_activities = result.unwrapOr("Failed to parse channel activities!");
+                    m_activities = result.unwrapOr("Failed to parse activities!");
                     
-                    if (m_activities == "Failed to parse channel activities!") {
+                    if (m_activities == "Failed to parse activities!") {
                         log::error("Failed to parse activities for channel ID {}!", channelId);
                         m_activities = matjson::Value();
                     } else {
                         log::info("Successfully retrieved activities for channel ID {}!", channelId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -387,10 +427,10 @@ matjson::Value YoutubeAPI::getActivites(std::string channelId) {
     return m_activities;
 }
 
-matjson::Value YoutubeAPI::getActivites() {
+matjson::Value YoutubeAPI::getActivites(std::function<void(const matjson::Value&)> callback) {
     m_activities = matjson::Value();
 
-    m_webListener.bind([this](web::WebTask::Event* e) {
+    m_webListener.bind([this, callback](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) { 
             std::string finalResult = res->string().unwrapOr("Failed to get activities!"); 
 
@@ -402,13 +442,17 @@ matjson::Value YoutubeAPI::getActivites() {
                 if (result.isErr()) {
                     log::error("Failed to parse activities for channel ID {}: {}", m_channelId, result.unwrapErr());
                 } else {
-                    m_activities = result.unwrapOr("Failed to parse channel activities!");
+                    m_activities = result.unwrapOr("Failed to parse activities!");
                     
-                    if (m_activities == "Failed to parse channel activities!") {
+                    if (m_activities == "Failed to parse activities!") {
                         log::error("Failed to parse activities for channel ID {}!", m_channelId);
                         m_activities = matjson::Value();
                     } else {
                         log::info("Successfully retrieved activities for channel ID {}!", m_channelId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
                     }
                 }
             }
@@ -419,4 +463,156 @@ matjson::Value YoutubeAPI::getActivites() {
     m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/activities?part=contentDetails,id,snippet&channelId=" + m_channelId + "&key=" + m_apiKey)); 
 
     return m_activities;
+}
+
+matjson::Value YoutubeAPI::getCaptionInfo(std::string videoId, std::function<void(const matjson::Value&)> callback) {
+    m_captionInfo = matjson::Value();
+
+    m_webListener.bind([this, videoId, callback](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get caption info!"); 
+
+            if (finalResult == "Failed to get caption info!") {
+                log::error("Failed to get caption info for video ID {}!", videoId);
+            } else {
+                auto result = matjson::parse(finalResult);
+
+                if (result.isErr()) {
+                    log::error("Failed to parse caption info for video ID {}: {}", videoId, result.unwrapErr());
+                } else {
+                    m_captionInfo = result.unwrapOr("Failed to parse caption info!");
+                    
+                    if (m_captionInfo == "Failed to parse caption info!") {
+                        log::error("Failed to parse caption info for video ID {}!", videoId);
+                        m_captionInfo = matjson::Value();
+                    } else {
+                        log::info("Successfully retrieved caption info for video ID {}!", videoId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    web::WebRequest request;
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/captions?part=id,snippet&videoId=" + videoId + "&key=" + m_apiKey)); 
+
+    return m_captionInfo;
+}
+
+matjson::Value YoutubeAPI::getCaptionInfo(std::function<void(const matjson::Value&)> callback) {
+    m_captionInfo = matjson::Value();
+
+    m_webListener.bind([this, callback](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get caption info!"); 
+
+            if (finalResult == "Failed to get caption info!") {
+                log::error("Failed to get caption info for video ID {}!", m_videoId);
+            } else {
+                auto result = matjson::parse(finalResult);
+
+                if (result.isErr()) {
+                    log::error("Failed to parse caption info for video ID {}: {}", m_videoId, result.unwrapErr());
+                } else {
+                    m_captionInfo = result.unwrapOr("Failed to parse caption info!");
+                    
+                    if (m_captionInfo == "Failed to parse caption info!") {
+                        log::error("Failed to parse caption info for video ID {}!", m_videoId);
+                        m_captionInfo = matjson::Value();
+                    } else {
+                        log::info("Successfully retrieved caption info for video ID {}!", m_videoId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    web::WebRequest request;
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/captions?part=id,snippet&videoId=" + m_videoId + "&key=" + m_apiKey)); 
+
+    return m_captionInfo;
+}
+
+matjson::Value YoutubeAPI::getCommentFromId(std::string commentId, std::function<void(const matjson::Value&)> callback) {
+    m_commentInfo = matjson::Value();
+
+    m_webListener.bind([this, commentId, callback](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get comments!"); 
+
+            if (finalResult == "Failed to get comments!") {
+                log::error("Failed to get comments for comment ID(s) {}!", commentId);
+            } else {
+                auto result = matjson::parse(finalResult);
+
+                if (result.isErr()) {
+                    log::error("Failed to parse comments for comment ID(s) {}: {}", commentId, result.unwrapErr());
+                } else {
+                    m_commentInfo = result.unwrapOr("Failed to parse comments!");
+                    
+                    if (m_commentInfo == "Failed to parse comments!") {
+                        log::error("Failed to parse comments for comment ID(s) {}!", commentId);
+                        m_commentInfo = matjson::Value();
+                    } else {
+                        log::info("Successfully retrieved comments for comment ID(s) {}!", commentId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    web::WebRequest request;
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/comments?part=id,snippet&id=" + commentId + "&key=" + m_apiKey)); 
+
+    return m_commentInfo;
+}
+
+matjson::Value YoutubeAPI::getComments(std::string parentId, std::string pageToken, std::function<void(const matjson::Value&)> callback) {
+    m_comments = matjson::Value();
+
+    m_webListener.bind([this, parentId, pageToken, callback](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) { 
+            std::string finalResult = res->string().unwrapOr("Failed to get comments!"); 
+
+            if (finalResult == "Failed to get comments!") {
+                log::error("Failed to get comments for comment ID(s) {}!", parentId);
+            } else {
+                auto result = matjson::parse(finalResult);
+
+                if (result.isErr()) {
+                    log::error("Failed to parse comments for comment ID(s) {}: {}", parentId, result.unwrapErr());
+                } else {
+                    m_comments = result.unwrapOr("Failed to parse comments!");
+                    
+                    if (m_comments == "Failed to parse comments!") {
+                        log::error("Failed to parse comments for comment ID(s) {}!", parentId);
+                        m_comments = matjson::Value();
+                    } else {
+                        log::info("Successfully retrieved comments for comment ID(s) {}!", parentId);
+
+                        if (callback) {
+                            callback(m_captionInfo);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    web::WebRequest request;
+    m_webListener.setFilter(request.get("https://www.googleapis.com/youtube/v3/comments?part=id,snippet&parentId=" + parentId + "&pageToken=" + pageToken + "&key=" + m_apiKey)); 
+
+    return m_comments;
 }
